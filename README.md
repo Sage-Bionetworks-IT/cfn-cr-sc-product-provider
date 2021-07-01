@@ -1,5 +1,20 @@
 # cfn-cr-sc-product-provider
-A custom resource for service catalog products
+A custom resource for managing service catalog products
+
+## Usage
+
+To use this custom resource add the following snippet to a cloudformation template:
+```yaml
+  UpdateProductVersions:
+    Type: Custom::ProductProvider
+    Properties:
+      ServiceToken: !ImportValue
+        'Fn::Sub': '${AWS::Region}-cfn-cr-sc-product-provider-UpdateProvisioningArtifactFunctionArn'
+      ProductId: !Ref MyProductId
+      ProvisioningArtifactActive: "True"
+      ProvisioningArtifactGuidance: "DEPRECATED"
+      ProvisioningArtifactAction: "ALL_EXCEPT_LATEST"
+```
 
 ## Development
 
@@ -61,16 +76,6 @@ the [serverless application repository](https://console.aws.amazon.com/serverles
 
 ```shell script
 sam publish --template .aws-sam/build/cfn-cr-sc-product-provider.yaml
-```
-
-### Public access
-Making the lambda publicly accessible makes it available in the
-[global AWS serverless application repository](https://serverlessrepo.aws.amazon.com/applications)
-
-```shell script
-aws serverlessrepo put-application-policy \
-  --application-id <lambda ARN> \
-  --statements Principals=*,Actions=Deploy
 ```
 
 ## Install Lambda into AWS
