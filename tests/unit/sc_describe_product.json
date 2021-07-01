@@ -1,0 +1,75 @@
+{
+    "ProductViewDetail": {
+        "ProductViewSummary": {
+            "Id": "prodview-f5u5agmpzkm7e",
+            "ProductId": "prod-vorrf6jrm57si",
+            "Name": "EC2: Linux",
+            "Owner": "Sage Bionetworks",
+            "ShortDescription": "This product builds one Linux EC2 instance, either Amazon Linux or Ubuntu",
+            "Type": "CLOUD_FORMATION_TEMPLATE",
+            "Distributor": "Sage Bionetworks",
+            "HasDefaultPath": false,
+            "SupportEmail": "sc-support@sagebase.org",
+            "SupportDescription": "Sage Bionetworks Support",
+            "SupportUrl": "https://www.synapse.org/#!Synapse:syn2580853/discussion/default"
+        },
+        "Status": "CREATED",
+        "ProductARN": "arn:aws:catalog:us-east-1:237179673806:product/prod-vorrf6jrm57si",
+        "CreatedTime": "2021-06-04T09:55:11-07:00"
+    },
+    "ProvisioningArtifactSummaries": [
+        {
+            "Id": "pa-mwv4usw5laf7s",
+            "Name": "v1.1.9",
+            "Description": "Update for strides",
+            "CreatedTime": "2021-06-04T09:55:11-07:00",
+            "ProvisioningArtifactMetadata": {
+                "SourceProductId": "prod-vorrf6jrm57si",
+                "SourceProvisioningArtifactId": "pa-mwv4usw5laf7s"
+            }
+        },
+        {
+            "Id": "pa-psujhj3yglxmg",
+            "Name": "v1.0.0",
+            "Description": "Baseline version.",
+            "CreatedTime": "2021-06-04T09:55:13-07:00",
+            "ProvisioningArtifactMetadata": {
+                "SourceProductId": "prod-vorrf6jrm57si",
+                "SourceProvisioningArtifactId": "pa-psujhj3yglxmg"
+            }
+        },
+        {
+            "Id": "pa-nas2v5nrgcbua",
+            "Name": "v1.1.13",
+            "Description": "Fix policies",
+            "CreatedTime": "2021-06-04T09:55:14-07:00",
+            "ProvisioningArtifactMetadata": {
+                "SourceProductId": "prod-vorrf6jrm57si",
+                "SourceProvisioningArtifactId": "pa-nas2v5nrgcbua"
+            }
+        },
+        {
+            "Id": "pa-ys2nqzbpg2hbw",
+            "Name": "v1.1.14",
+            "Description": "Restore set_env_vars. 1436",
+            "CreatedTime": "2021-06-04T09:55:18-07:00",
+            "ProvisioningArtifactMetadata": {
+                "SourceProductId": "prod-vorrf6jrm57si",
+                "SourceProvisioningArtifactId": "pa-ys2nqzbpg2hbw"
+            }
+        },
+        {
+            "Id": "pa-wywm54o3dnehu",
+            "Name": "v1.1.10",
+            "Description": "Include params in mapping",
+            "CreatedTime": "2021-06-04T09:55:18-07:00",
+            "ProvisioningArtifactMetadata": {
+                "SourceProductId": "prod-vorrf6jrm57si",
+                "SourceProvisioningArtifactId": "pa-wywm54o3dnehu"
+            }
+        }
+    ],
+    "Tags": [],
+    "TagOptions": [],
+    "Budgets": []
+}
