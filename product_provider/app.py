@@ -125,9 +125,11 @@ def create_or_update(event, context):
   log.debug('Start Lambda processing')
 
   product_id = get_env_var_value('PRODUCT_ID')
-  provisioning_artifact_active = get_env_var_value('PROVISIONING_ARTIFACT_ACTIVE')
   provisioning_artifact_guidance = get_env_var_value('PROVISIONING_ARTIFACT_GUIDANCE')
   provisioning_artifact_action = get_env_var_value('PROVISIONING_ARTIFACT_ACTION')
+  provisioning_artifact_active = True
+  if get_env_var_value('PROVISIONING_ARTIFACT_ACTIVE') == 'False':
+    provisioning_artifact_active = False
 
   product_info = sc_client.describe_product_as_admin(Id=product_id)
   log.debug(f"Product info: ${product_info}")
