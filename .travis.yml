@@ -10,9 +10,9 @@ env:
     - LAMBDA_BUCKET="essentials-awss3lambdaartifactsbucket-x29ftznj6pqw"
     - CFN_BUCKET="bootstrap-awss3cloudformationbucket-19qromfd235z9"
 install:
-  - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2/awscliv2.zip"
+  - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -O "/tmp/awscliv2/awscliv2.zip"
   - pushd /tmp/awscliv2 && unzip /tmp/awscliv2/awscliv2.zip && sudo ./aws/install && popd
-  - curl "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip" -o "/tmp/awssamcli/awssamcli.zip"
+  - curl "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip" -O "/tmp/awssamcli/awssamcli.zip"
   - pushd /tmp/awssamcli && unzip ./awssamcli/awssamcli.zip -d awssamcli && sudo ./awssamcli/install && popd
   - pip install pipenv
   - pipenv install --dev
