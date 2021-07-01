@@ -95,7 +95,7 @@ def get_artifacts_to_update(provisioning_artifacts, action):
     for provisioning_artifact in provisioning_artifacts:
       if provisioning_artifact['ProvisioningArtifactId'] != latest_artifact['ProvisioningArtifactId']:
         artifacts.append(provisioning_artifact)
-  
+
   return artifacts
 
 def update_provisioning_artifacts(provisioning_artifacts, action='ALL', active=True, guidance='DEFAULT'):
