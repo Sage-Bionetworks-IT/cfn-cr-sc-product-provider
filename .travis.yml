@@ -12,10 +12,10 @@ env:
 install:
   - mkdir -p /tmp/awscliv2
   - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2/awscliv2.zip"
-  - pushd /tmp/awscliv2 && unzip /tmp/awscliv2/awscliv2.zip && sudo ./aws/install && popd
+  - pushd /tmp/awscliv2 && unzip ./awscliv2.zip && sudo ./aws/install && popd
   - mkdir -p /tmp/awssamcli
-  - curl "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip" -o "/tmp/awssamcli/awssamcli.zip"
-  - pushd /tmp/awssamcli && unzip ./awssamcli/awssamcli.zip -d awssamcli && sudo ./awssamcli/install && popd
+  - curl -L "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip" -o "/tmp/awssamcli/awssamcli.zip"
+  - pushd /tmp/awssamcli && unzip ./awssamcli.zip && sudo ./install && popd
   - pip install pipenv
   - pipenv install --dev
 before_script:
