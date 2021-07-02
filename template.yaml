@@ -6,7 +6,7 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 60
 
 Resources:
   UpdateProvisioningArtifactFunction:
@@ -37,6 +37,12 @@ Outputs:
   UpdateProvisioningArtifactFunctionArn:
     Description: "Deprecate product versions function ARN"
     Value: !GetAtt UpdateProvisioningArtifactFunction.Arn
+    Export:
+      Name:
+        Fn::Sub: ${AWS::Region}-${AWS::StackName}-UpdateProvisioningArtifactFunctionArn
   UpdateProvisioningArtifactFunctionRoleArn:
     Description: "Implicit IAM Role created for deprecate product version function"
     Value: !GetAtt UpdateProvisioningArtifactFunctionRole.Arn
+    Export:
+      Name:
+        Fn::Sub: ${AWS::Region}-${AWS::StackName}-UpdateProvisioningArtifactFunctionRoleArn

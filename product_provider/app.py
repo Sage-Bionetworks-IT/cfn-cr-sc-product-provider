@@ -8,13 +8,13 @@ from crhelper import CfnResource
 from semver import VersionInfo
 
 helper = CfnResource(
-  json_logging=False, log_level='DEBUG', boto_level='CRITICAL')
+  json_logging=False, log_level='INFO', boto_level='CRITICAL')
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
-def sc_client():
-  return boto3.client('sc')
+def get_sc_client():
+  return boto3.client('servicecatalog')
 
 def get_env_var_value(env_var):
   '''Get the value of an environment variable
@@ -149,9 +149,10 @@ def update_provisioning_artifacts(provisioning_artifacts, action='ALL', active=T
   :return:
   '''
   artifacts = get_artifacts_to_update(provisioning_artifacts, action)
-  log.debug(f"Provisioning artifacts to update: {artifacts}")
+  log.debug(f"Updating provisioning artifacts with active={active} and guidance={guidance}")
   for artifact in artifacts:
-    response = sc_client.update_provisioning_artifact(
+    log.debug(f"Updating provisioning artifact: {artifact}")
+    response = get_sc_client().update_provisioning_artifact(
       ProductId=artifact['ProductId'],
       ProvisioningArtifactId=artifact['ProvisioningArtifactId'],
       Active=active,
@@ -167,14 +168,14 @@ def create_or_update(event, context):
   log.debug(f"Start Lambda processing")
 
   properties = get_properties(event.get('ResourceProperties'))
-  product_info = sc_client.describe_product_as_admin(Id=properties['ProductId'])
+  product_info = get_sc_client().describe_product_as_admin(Id=properties['ProductId'])
   log.debug(f"Product info: ${product_info}")
   provisioning_artifacts = get_provisioning_artifacts(product_info)
   log.debug(f"All provisioning_artifacts: ${provisioning_artifacts}")
   update_provisioning_artifacts(provisioning_artifacts,
                                 active=properties['ProvisioningArtifactActive'],
-                                action=properties['ProvisioningArtifactGuidance'],
-                                guidance=properties['ProvisioningArtifactAction'])
+                                action=properties['ProvisioningArtifactAction'],
+                                guidance=properties['ProvisioningArtifactGuidance'])
 
 @helper.delete
 def delete(event, context):
