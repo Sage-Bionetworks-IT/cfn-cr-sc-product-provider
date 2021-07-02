@@ -68,7 +68,7 @@ def get_properties(resource_properties):
 
 def get_latest_provisioning_artifact(provisioning_artifacts):
   '''
-  Get the latest the latest version of a product's provisioning artifact.
+  Get the latest version of a product's provisioning artifact.
   :param provisioning_artifacts: a list from get_provisioning_artifacts
   :return: a dict with the product's info about the latest provisioning artifact
   '''
@@ -117,7 +117,7 @@ def get_provisioning_artifacts(product_info):
   return artifacts
 
 
-def get_artifacts_to_update(provisioning_artifacts, action):
+def get_artifacts_to_update(provisioning_artifacts, action='ALL'):
   '''
   Get a list of provisioning artifacts to update
   :param provisioning_artifacts: a list from get_provisioning_artifacts
@@ -128,12 +128,14 @@ def get_artifacts_to_update(provisioning_artifacts, action):
   artifacts = None
   if action == 'ALL':
     artifacts = provisioning_artifacts
-  if action == 'ALL_EXCEPT_LATEST':
+  elif action == 'ALL_EXCEPT_LATEST':
     latest_artifact = get_latest_provisioning_artifact(provisioning_artifacts)
     artifacts = []
     for provisioning_artifact in provisioning_artifacts:
       if provisioning_artifact['ProvisioningArtifactId'] != latest_artifact['ProvisioningArtifactId']:
         artifacts.append(provisioning_artifact)
+  else:
+    raise ValueError(f"Invalid provisioning artifact update action type: {action}")
 
   return artifacts
 
@@ -160,8 +162,9 @@ def update_provisioning_artifacts(provisioning_artifacts, action='ALL', active=T
 @helper.update
 def create_or_update(event, context):
   '''Handles customm resource create and update events'''
-  log.debug('Received event: ' + json.dumps(event, sort_keys=False))
-  log.debug('Start Lambda processing')
+  recieved_event = json.dumps(event, sort_keys=False)
+  log.debug(f"Received event: {recieved_event}")
+  log.debug(f"Start Lambda processing")
 
   properties = get_properties(event.get('ResourceProperties'))
   product_info = sc_client.describe_product_as_admin(Id=properties['ProductId'])

@@ -66,6 +66,10 @@ class TestProductProvider(unittest.TestCase):
     }
     self.assertDictEqual(result, expected)
 
+  def test_get_properties_invalid_action(self):
+    with self.assertRaises(ValueError):
+      app.get_artifacts_to_update(None, action="INVALID")
+
   def test_get_artifacts_to_update_all_except_for_latest(self):
     data = get_file_contents('tests/unit/provisioning_artifacts.json')
     result = app.get_artifacts_to_update(data, 'ALL_EXCEPT_LATEST')
