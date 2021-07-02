@@ -3,6 +3,8 @@ A custom resource for managing service catalog products
 
 ## Usage
 
+### UpdateProvisioningArtifactFunction
+
 To use this custom resource add the following snippet to a cloudformation template:
 ```yaml
   UpdateProductVersions:
@@ -15,6 +17,20 @@ To use this custom resource add the following snippet to a cloudformation templa
       ProvisioningArtifactGuidance: "DEPRECATED"
       ProvisioningArtifactAction: "ALL_EXCEPT_LATEST"
 ```
+
+Properties:
+* ProductId [required] - The service catalog product ID (i.e. prod-iugafjcy2eyro).
+* ProvisioningArtifactActive - Indicates whether the product version is active.
+  Inactive provisioning artifacts are invisible to end users. End users cannot launch
+  or update a provisioned product from an inactive provisioning artifact. Allowed
+  values are True|False.  Default is "True"
+* ProvisioningArtifactGuidance - The value to apply to the product version guidance.
+  Allowed values are DEFAULT|DEPRECATED.  Default value is "DEFAULT"
+* ProvisioningArtifactAction - ALL to apply to all artifacts, ALL_EXCEPT_LATEST to
+  apply to all except latest artifact.  Default value is "ALL"
+
+More info about properties can be found in the
+[update_provisioning_artifact API](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/servicecatalog.html#ServiceCatalog.Client.update_provisioning_artifact)
 
 ## Development
 

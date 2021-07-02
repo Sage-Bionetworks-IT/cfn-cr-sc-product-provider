@@ -3,37 +3,6 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   Cloudformation custom resource to manage service catalog products
 
-Parameters:
-  ProductId:
-    Description: 'The service catalog product ID'
-    Type: String
-    AllowedPattern: "^prod-.{13}$"
-    ConstraintDescription: "Must be a valid service catalog product id (i.e. prod-iugafjcy2eyro)"
-  ProvisioningArtifactActive:
-    Description: >-
-      Indicates whether the product version is active. Inactive provisioning artifacts
-      are invisible to end users. End users cannot launch or update a provisioned product
-      from an inactive provisioning artifact
-    Type: String
-    AllowedValues:
-      - "True"
-      - "False"
-    ConstraintDescription: "Valid values are True|False"
-  ProvisioningArtifactGuidance:
-    Description: 'The value to apply to the product version guidance'
-    Type: String
-    AllowedValues:
-      - "DEFAULT"
-      - "DEPRECATED"
-    ConstraintDescription: "Valid values are DEFAULT|DEPRECATED"
-  ProvisioningArtifactAction:
-    Description: 'ALL to apply to all artifacts, ALL_EXCEPT_LATEST to apply to all except latest artifact'
-    Type: String
-    AllowedValues:
-      - "ALL"
-      - "ALL_EXCEPT_LATEST"
-    ConstraintDescription: "Valid values are ALL|ALL_EXCEPT_LATEST"
-
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
@@ -47,12 +16,6 @@ Resources:
       Handler: product_provider/app.lambda_handler
       Runtime: python3.7
       Role: !GetAtt UpdateProvisioningArtifactFunctionRole.Arn
-      Environment:
-        Variables:
-          PRODUCT_ID: !Ref ProductId
-          PROVISIONING_ARTIFACT_ACTIVE: !Ref ProvisioningArtifactActive
-          PROVISIONING_ARTIFACT_GUIDANCE: !Ref ProvisioningArtifactGuidance
-          PROVISIONING_ARTIFACT_ACTION: !Ref ProvisioningArtifactAction
 
   UpdateProvisioningArtifactFunctionRole:   # execute lambda function with this role
     Type: AWS::IAM::Role

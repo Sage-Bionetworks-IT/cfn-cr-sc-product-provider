@@ -133,3 +133,101 @@ class TestProductProvider(unittest.TestCase):
       }
     ]
     self.assertListEqual(result, expected)
+
+  def test_get_properties_default_properties(self):
+    resource_properties = {
+      "ProductId": "prod-abcdef1234567"
+    }
+    actual = app.get_properties(resource_properties)
+    expected = {
+      "ProductId": "prod-abcdef1234567",
+      "ProvisioningArtifactActive": True,
+      "ProvisioningArtifactGuidance": "DEFAULT",
+      "ProvisioningArtifactAction": "ALL",
+    }
+    self.assertDictEqual(actual, expected)
+
+  def test_get_properties_no_product_id(self):
+    with self.assertRaises(ValueError):
+      resource_properties = {
+      }
+      app.get_properties(resource_properties)
+
+  def test_get_properties_invalid_product_id(self):
+    with self.assertRaises(ValueError):
+      resource_properties = {
+        "ProductId": "invalid-product-id"
+      }
+      app.get_properties(resource_properties)
+
+  def test_get_properties_invalid_provisioning_artifact_active(self):
+    resource_properties = {
+      "ProductId": "prod-abcdef1234567",
+      "ProvisioningArtifactActive": "foo"
+    }
+    actual = app.get_properties(resource_properties)
+    expected = {
+      "ProductId": "prod-abcdef1234567",
+      "ProvisioningArtifactActive": True,
+      "ProvisioningArtifactGuidance": "DEFAULT",
+      "ProvisioningArtifactAction": "ALL",
+    }
+    self.assertDictEqual(actual, expected)
+
+  def test_get_properties_non_default_provisioning_artifact_active(self):
+    resource_properties = {
+      "ProductId": "prod-abcdef1234567",
+      "ProvisioningArtifactActive": "False"
+    }
+    actual = app.get_properties(resource_properties)
+    expected = {
+      "ProductId": "prod-abcdef1234567",
+      "ProvisioningArtifactActive": False,
+      "ProvisioningArtifactGuidance": "DEFAULT",
+      "ProvisioningArtifactAction": "ALL",
+    }
+    self.assertDictEqual(actual, expected)
+
+  def test_get_properties_invalid_provisioning_artifact_guidance(self):
+    with self.assertRaises(ValueError):
+      resource_properties = {
+        "ProductId": "prod-abcdef1234567",
+        "ProvisioningArtifactGuidance": "INVALID"
+      }
+      app.get_properties(resource_properties)
+
+  def test_get_properties_non_default_provisioning_artifact_guidance(self):
+    resource_properties = {
+      "ProductId": "prod-abcdef1234567",
+      "ProvisioningArtifactGuidance": "DEPRECATED"
+    }
+    actual = app.get_properties(resource_properties)
+    expected = {
+      "ProductId": "prod-abcdef1234567",
+      "ProvisioningArtifactActive": True,
+      "ProvisioningArtifactGuidance": "DEPRECATED",
+      "ProvisioningArtifactAction": "ALL",
+    }
+    self.assertDictEqual(actual, expected)
+
+  def test_get_properties_invalid_provisioning_artifact_action(self):
+    with self.assertRaises(ValueError):
+      resource_properties = {
+        "ProductId": "prod-abcdef1234567",
+        "ProvisioningArtifactAction": "INVALID"
+      }
+      app.get_properties(resource_properties)
+
+  def test_get_properties_non_default_provisioning_artifact_action(self):
+    resource_properties = {
+      "ProductId": "prod-abcdef1234567",
+      "ProvisioningArtifactAction": "ALL_EXCEPT_LATEST"
+    }
+    actual = app.get_properties(resource_properties)
+    expected = {
+      "ProductId": "prod-abcdef1234567",
+      "ProvisioningArtifactActive": True,
+      "ProvisioningArtifactGuidance": "DEFAULT",
+      "ProvisioningArtifactAction": "ALL_EXCEPT_LATEST",
+    }
+    self.assertDictEqual(actual, expected)

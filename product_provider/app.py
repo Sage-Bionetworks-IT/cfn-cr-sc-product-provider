@@ -1,8 +1,8 @@
 import boto3
-import enum
 import json
 import logging
 import os
+import re
 
 from crhelper import CfnResource
 from semver import VersionInfo
@@ -26,6 +26,45 @@ def get_env_var_value(env_var):
     log.warning(f'cannot get environment variable: {env_var}')
 
   return value
+
+def get_properties(resource_properties):
+  '''
+  Get properties passed into this custom resource. Check for missing properties
+  and invalid values.
+  :param resource_properties: the passed in properties
+  :return: a dictionary of property keys and values
+  '''
+  properties = {}
+  product_id = resource_properties.get("ProductId")
+  if not product_id:
+    raise ValueError(f"ProductId is required property")
+  if not re.search("^prod-.{13}$", product_id):
+    raise ValueError(f"ProductId  must be a valid service catalog"
+                     f"product id (i.e. prod-iugafjcy2eyro)")
+  properties['ProductId'] =product_id
+
+  properties["ProvisioningArtifactActive"] = True
+  provisioning_artifact_active = resource_properties.get("ProvisioningArtifactActive")
+  if provisioning_artifact_active and provisioning_artifact_active.lower() == 'false':
+    properties["ProvisioningArtifactActive"] = False
+
+  properties["ProvisioningArtifactGuidance"] = "DEFAULT"
+  provisioning_artifact_guidance = resource_properties.get("ProvisioningArtifactGuidance")
+  if provisioning_artifact_guidance:
+    if provisioning_artifact_guidance not in ["DEFAULT", "DEPRECATED"]:
+      raise ValueError(f"ProvisioningArtifactGuidance valid values are DEFAULT|DEPRECATED")
+    else:
+      properties["ProvisioningArtifactGuidance"] = provisioning_artifact_guidance
+
+  properties["ProvisioningArtifactAction"] = "ALL"
+  provisioning_artifact_action = resource_properties.get("ProvisioningArtifactAction")
+  if provisioning_artifact_action:
+    if provisioning_artifact_action not in ["ALL", "ALL_EXCEPT_LATEST"] :
+      raise ValueError(f"ProvisioningArtifactAction valid values are ALL|ALL_EXCEPT_LATEST")
+    else:
+      properties["ProvisioningArtifactAction"] = provisioning_artifact_action
+
+  return properties
 
 def get_latest_provisioning_artifact(provisioning_artifacts):
   '''
@@ -124,21 +163,15 @@ def create_or_update(event, context):
   log.debug('Received event: ' + json.dumps(event, sort_keys=False))
   log.debug('Start Lambda processing')
 
-  product_id = get_env_var_value('PRODUCT_ID')
-  provisioning_artifact_guidance = get_env_var_value('PROVISIONING_ARTIFACT_GUIDANCE')
-  provisioning_artifact_action = get_env_var_value('PROVISIONING_ARTIFACT_ACTION')
-  provisioning_artifact_active = True
-  if get_env_var_value('PROVISIONING_ARTIFACT_ACTIVE') == 'False':
-    provisioning_artifact_active = False
-
-  product_info = sc_client.describe_product_as_admin(Id=product_id)
+  properties = get_properties(event.get('ResourceProperties'))
+  product_info = sc_client.describe_product_as_admin(Id=properties['ProductId'])
   log.debug(f"Product info: ${product_info}")
   provisioning_artifacts = get_provisioning_artifacts(product_info)
   log.debug(f"All provisioning_artifacts: ${provisioning_artifacts}")
   update_provisioning_artifacts(provisioning_artifacts,
-                                active=provisioning_artifact_active,
-                                action=provisioning_artifact_guidance,
-                                guidance=provisioning_artifact_action)
+                                active=properties['ProvisioningArtifactActive'],
+                                action=properties['ProvisioningArtifactGuidance'],
+                                guidance=properties['ProvisioningArtifactAction'])
 
 @helper.delete
 def delete(event, context):
