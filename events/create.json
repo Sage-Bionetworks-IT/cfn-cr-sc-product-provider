@@ -1,0 +1,16 @@
+{
+    "RequestType": "Create",
+    "ServiceToken": "arn:aws:lambda:us-east-1:465877038949:function:cfn-cr-sc-product-provide-UpdateProvisioningArtifa-If6miouMz4k6",
+    "ResponseURL": "https://cloudformation-custom-resource-response-useast1.s3.amazonaws.com/arn%3Aaws%3Acloudformation%3Aus-east-1%3A465877038949%3Astack/kd-sc-product-ec2-linux-jumpcloud/9e9d17f0-db89-11eb-907f-0ec446493c7d%7CUpdateProductVersions%7Cb06aa747-5c0f-4065-a1ef-c5a2bf07fdfe?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210702T230308Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=AKIA6L7Q4OWT5RZXSXPW%2F20210702%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=577222d33c6651767193f22ec39ee255d0e93655b49a4ab17fb5cfeee987f235",
+    "StackId": "arn:aws:cloudformation:us-east-1:465877038949:stack/kd-sc-product-ec2-linux-jumpcloud/9e9d17f0-db89-11eb-907f-0ec446493c7d",
+    "RequestId": "b06aa747-5c0f-4065-a1ef-c5a2bf07fdfe",
+    "LogicalResourceId": "UpdateProductVersions",
+    "ResourceType": "Custom::ProductProvider",
+    "ResourceProperties": {
+        "ServiceToken": "arn:aws:lambda:us-east-1:465877038949:function:cfn-cr-sc-product-provide-UpdateProvisioningArtifa-If6miouMz4k6",
+        "ProvisioningArtifactGuidance": "DEPRECATED",
+        "ProductId": "prod-2c5opndjv52pw",
+        "ProvisioningArtifactActive": "True",
+        "ProvisioningArtifactAction": "ALL_EXCEPT_LATEST"
+    }
+}

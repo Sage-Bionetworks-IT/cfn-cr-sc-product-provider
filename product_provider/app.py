@@ -8,7 +8,7 @@ from crhelper import CfnResource
 from semver import VersionInfo
 
 helper = CfnResource(
-  json_logging=False, log_level='INFO', boto_level='CRITICAL')
+  json_logging=False, log_level='DEBUG', boto_level='CRITICAL')
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
@@ -159,15 +159,9 @@ def update_provisioning_artifacts(provisioning_artifacts, action='ALL', active=T
       Guidance=guidance
     )
 
-@helper.create
-@helper.update
-def create_or_update(event, context):
-  '''Handles customm resource create and update events'''
-  recieved_event = json.dumps(event, sort_keys=False)
-  log.debug(f"Received event: {recieved_event}")
-  log.debug(f"Start Lambda processing")
-
+def configure_product(event, context):
   properties = get_properties(event.get('ResourceProperties'))
+  log.debug(f"Properties: {properties}")
   product_info = get_sc_client().describe_product_as_admin(Id=properties['ProductId'])
   log.debug(f"Product info: ${product_info}")
   provisioning_artifacts = get_provisioning_artifacts(product_info)
@@ -177,9 +171,28 @@ def create_or_update(event, context):
                                 action=properties['ProvisioningArtifactAction'],
                                 guidance=properties['ProvisioningArtifactGuidance'])
 
+@helper.create
+def create(event, context):
+  '''Handles customm resource create events'''
+  recieved_event = json.dumps(event, sort_keys=False)
+  log.info(f"Received event: {recieved_event}")
+  log.info(f"Start Lambda processing")
+  configure_product(event, context)
+
+@helper.update
+def update(event, context):
+  '''Handles customm resource update events'''
+  recieved_event = json.dumps(event, sort_keys=False)
+  log.info(f"Received event: {recieved_event}")
+  if event['ResourceProperties'] != event['OldResourceProperties']:
+    log.info(f"Updating product")
+    configure_product(event, context)
+
 @helper.delete
 def delete(event, context):
   '''Handles custom resource delete events'''
+  recieved_event = json.dumps(event, sort_keys=False)
+  log.info(f"Received event: {recieved_event}")
   pass
 
 def lambda_handler(event, context):
