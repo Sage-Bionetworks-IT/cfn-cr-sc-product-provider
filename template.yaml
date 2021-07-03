@@ -6,18 +6,18 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 60
 
 Resources:
-  DeprecateProductVersionFunction:
+  UpdateProvisioningArtifactFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: .
       Handler: product_provider/app.lambda_handler
       Runtime: python3.7
-      Role: !GetAtt DeprecateProductVersionFunctionRole.Arn
+      Role: !GetAtt UpdateProvisioningArtifactFunctionRole.Arn
 
-  DeprecateProductVersionFunctionRole:   # execute lambda function with this role
+  UpdateProvisioningArtifactFunctionRole:   # execute lambda function with this role
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -34,9 +34,15 @@ Resources:
         - arn:aws:iam::aws:policy/AWSServiceCatalogAdminFullAccess
 
 Outputs:
-  DeprecateProductVersionFunctionArn:
+  UpdateProvisioningArtifactFunctionArn:
     Description: "Deprecate product versions function ARN"
-    Value: !GetAtt DeprecateProductVersionFunction.Arn
-  DeprecateProductVersionFunctionRoleArn:
+    Value: !GetAtt UpdateProvisioningArtifactFunction.Arn
+    Export:
+      Name:
+        Fn::Sub: ${AWS::Region}-${AWS::StackName}-UpdateProvisioningArtifactFunctionArn
+  UpdateProvisioningArtifactFunctionRoleArn:
     Description: "Implicit IAM Role created for deprecate product version function"
-    Value: !GetAtt DeprecateProductVersionFunctionRole.Arn
+    Value: !GetAtt UpdateProvisioningArtifactFunctionRole.Arn
+    Export:
+      Name:
+        Fn::Sub: ${AWS::Region}-${AWS::StackName}-UpdateProvisioningArtifactFunctionRoleArn
