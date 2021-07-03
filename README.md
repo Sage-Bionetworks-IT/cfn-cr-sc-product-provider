@@ -64,7 +64,7 @@ Running integration tests
 [requires docker](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-api.html)
 
 ```shell script
-$ sam local invoke HelloWorldFunction --event events/event.json
+$ sam local invoke UpdateProvisioningArtifactFunction --event events/event.json
 ```
 
 ## Deployment
@@ -82,16 +82,6 @@ sam package --template-file .aws-sam/build/template.yaml \
   --output-template-file .aws-sam/build/cfn-cr-sc-product-provider.yaml
 
 aws s3 cp .aws-sam/build/cfn-cr-sc-product-provider.yaml s3://bootstrap-awss3cloudformationbucket-19qromfd235z9/cfn-cr-sc-product-provider/master/
-```
-
-## Publish Lambda
-
-### Private access
-Publishing the lambda makes it available in your AWS account.  It will be accessible in
-the [serverless application repository](https://console.aws.amazon.com/serverlessrepo).
-
-```shell script
-sam publish --template .aws-sam/build/cfn-cr-sc-product-provider.yaml
 ```
 
 ## Install Lambda into AWS
