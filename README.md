@@ -48,7 +48,7 @@ the [pre-commit](https://pre-commit.com/) git hook.
 ### Create a local build
 
 ```shell script
-$ sam build
+sam build
 ```
 
 ### Run unit tests
@@ -56,7 +56,7 @@ Tests are defined in the `tests` folder in this project. Use PIP to install the
 [pytest](https://docs.pytest.org/en/latest/) and run unit tests.
 
 ```shell script
-$ python -m pytest tests/ -v
+python -m pytest tests/ -v
 ```
 
 ### Run integration tests
@@ -64,7 +64,7 @@ Running integration tests
 [requires docker](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-api.html)
 
 ```shell script
-$ sam local invoke UpdateProvisioningArtifactFunction --event events/event.json
+sam local invoke UpdateProvisioningArtifactFunction --event events/event.json
 ```
 
 ## Deployment
