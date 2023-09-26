@@ -4,14 +4,14 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pytest = "~=6.0.1"
-pytest-mock = "~=3.3.1"
-pre-commit = "~=2.7.1"
-boto3 = "~=1.17.102"
+pytest = "~=6.0"
+pytest-mock = "~=3.3"
+pre-commit = "~=2.7"
+boto3 = "~=1.17"
 
 [packages]
-crhelper = "~=2.0.10"
-semver = "~=2.13.0"
+crhelper = "~=2.0"
+semver = "~=2.13"
 
 [requires]
-python_version = "3.7"
+python_version = "3.9"
